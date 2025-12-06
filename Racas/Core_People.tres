@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="Raca" load_steps=2 format=3 uid="uid://dcwsuujrmoimx"]
+
+[ext_resource type="Script" uid="uid://bmwueexa4ghih" path="res://Classes/Raca.gd" id="1_nis55"]
+
+[resource]
+script = ExtResource("1_nis55")
+Race_Name = 6
+Max_Power_level_on_start = 1000
+Genetics = "Normal Apple"
+metadata/_custom_type_script = "uid://bmwueexa4ghih"

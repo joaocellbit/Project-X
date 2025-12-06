@@ -1,0 +1,23 @@
+[gd_scene load_steps=5 format=3 uid="uid://bnbkh3esbul32"]
+
+[ext_resource type="Script" uid="uid://csfqxu6ljs0w" path="res://Scripts/saiyajin.gd" id="1_os3aw"]
+[ext_resource type="Resource" uid="uid://b7nos1kk66klp" path="res://Racas/Saiyan.tres" id="2_os3aw"]
+[ext_resource type="Texture2D" uid="uid://cyc8b4s7m7hky" path="res://icon.svg" id="3_os3aw"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_obmxy"]
+
+[node name="Player_Saiyan" type="CharacterBody2D"]
+script = ExtResource("1_os3aw")
+Nome = "Saiyan"
+Max_Health = 100
+race = ExtResource("2_os3aw")
+Power_level = 10
+metadata/_custom_type_script = "uid://blc4ckw5ovshq"
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(-1.7881393e-07, -8.34465e-07)
+scale = Vector2(0.15625001, 0.15624999)
+texture = ExtResource("3_os3aw")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_obmxy")
