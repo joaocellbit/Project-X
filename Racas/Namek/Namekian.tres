@@ -1,10 +1,12 @@
 [gd_resource type="Resource" script_class="Raca" load_steps=2 format=3 uid="uid://dl8dme2q7504o"]
 
-[ext_resource type="Script" uid="uid://bmwueexa4ghih" path="res://Classes/Raca.gd" id="1_vpg52"]
+[ext_resource type="Script" uid="uid://bmwueexa4ghih" path="res://Classes/Raca.gd" id="1_1ehtd"]
 
 [resource]
-script = ExtResource("1_vpg52")
+script = ExtResource("1_1ehtd")
 Race_Name = 3
-Max_Power_level_on_start = 1000
+Max_Power_level_on_start = 500
 Genetics = "Dragon Clan"
+RaceLatentPower = 1.1
+lifespan = 200
 metadata/_custom_type_script = "uid://bmwueexa4ghih"

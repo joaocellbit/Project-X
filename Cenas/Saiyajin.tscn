@@ -1,146 +1,14 @@
-[gd_scene load_steps=22 format=3 uid="uid://bnbkh3esbul32"]
+[gd_scene load_steps=9 format=3 uid="uid://bnbkh3esbul32"]
 
 [ext_resource type="Script" uid="uid://csfqxu6ljs0w" path="res://Scripts/saiyajin.gd" id="1_os3aw"]
-[ext_resource type="Resource" uid="uid://b7nos1kk66klp" path="res://Racas/Saiyan.tres" id="2_os3aw"]
+[ext_resource type="Resource" uid="uid://cppefq2i8l6ni" path="res://Racas/Saiyajins/Saiyan_Low.tres" id="2_o4sbo"]
 [ext_resource type="SpriteFrames" uid="uid://c60yq7h45lfha" path="res://Animaçoes/WhiteMale.tres" id="3_o4sbo"]
-[ext_resource type="Texture2D" uid="uid://c53f7tpdmlk0s" path="res://Icones/Eyes.png" id="4_omodc"]
-[ext_resource type="Script" uid="uid://dwrq8yrolg7xd" path="res://Cenas/eye.gd" id="5_0gjeo"]
-[ext_resource type="SpriteFrames" uid="uid://fwf5nytu3m8w" path="res://Animaçoes/Tail.tres" id="6_pda0c"]
+[ext_resource type="SpriteFrames" uid="uid://c55dhh01dwlc6" path="res://Animaçoes/Eye.tres" id="4_o4sbo"]
+[ext_resource type="Script" uid="uid://ds2n8gus07syh" path="res://Scripts/character_body.gd" id="4_omodc"]
+[ext_resource type="SpriteFrames" uid="uid://q7nup6qq18kh" path="res://Animaçoes/Tail.tres" id="6_pda0c"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_obmxy"]
 size = Vector2(12, 23)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_f23x7"]
-atlas = ExtResource("4_omodc")
-region = Rect2(32, 128, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_t3uin"]
-atlas = ExtResource("4_omodc")
-region = Rect2(192, 96, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_kl0kk"]
-atlas = ExtResource("4_omodc")
-region = Rect2(64, 128, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_vcdqa"]
-atlas = ExtResource("4_omodc")
-region = Rect2(64, 0, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_putpc"]
-atlas = ExtResource("4_omodc")
-region = Rect2(0, 0, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_pfeqh"]
-atlas = ExtResource("4_omodc")
-region = Rect2(96, 0, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_x8lre"]
-atlas = ExtResource("4_omodc")
-region = Rect2(96, 96, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_81xsj"]
-atlas = ExtResource("4_omodc")
-region = Rect2(64, 64, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_o4sbo"]
-atlas = ExtResource("4_omodc")
-region = Rect2(0, 0, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_omodc"]
-atlas = ExtResource("4_omodc")
-region = Rect2(128, 0, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_0gjeo"]
-atlas = ExtResource("4_omodc")
-region = Rect2(32, 32, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_pda0c"]
-atlas = ExtResource("4_omodc")
-region = Rect2(160, 32, 32, 32)
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_isoqe"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_f23x7")
-}],
-"loop": true,
-"name": &"FlyEast",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_t3uin")
-}],
-"loop": true,
-"name": &"FlySouth",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_kl0kk")
-}],
-"loop": true,
-"name": &"FlyWest",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_vcdqa")
-}],
-"loop": true,
-"name": &"IdleEast",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_putpc")
-}],
-"loop": true,
-"name": &"IdleSouth",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_pfeqh")
-}],
-"loop": true,
-"name": &"IdleWest",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_x8lre")
-}],
-"loop": true,
-"name": &"PunchLeft",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_81xsj")
-}],
-"loop": true,
-"name": &"PunchRight",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_o4sbo")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_omodc")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_0gjeo")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_pda0c")
-}],
-"loop": true,
-"name": &"WalkSouth",
-"speed": 5.0
-}]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6uclf"]
 size = Vector2(12, 11.000003)
@@ -149,8 +17,7 @@ size = Vector2(12, 11.000003)
 script = ExtResource("1_os3aw")
 Nome = "Saiyan"
 Max_Health = 100
-race = ExtResource("2_os3aw")
-Power_level = 10
+race = ExtResource("2_o4sbo")
 metadata/_custom_type_script = "uid://blc4ckw5ovshq"
 
 [node name="CharacterHitbox" type="CollisionShape2D" parent="."]
@@ -163,11 +30,11 @@ position = Vector2(0, -2)
 scale = Vector2(0.7591797, 0.85694444)
 sprite_frames = ExtResource("3_o4sbo")
 animation = &"IdleSouth"
+script = ExtResource("4_omodc")
 
 [node name="Eye" type="AnimatedSprite2D" parent="CharacterBody"]
-sprite_frames = SubResource("SpriteFrames_isoqe")
+sprite_frames = ExtResource("4_o4sbo")
 animation = &"IdleSouth"
-script = ExtResource("5_0gjeo")
 
 [node name="Tail" type="AnimatedSprite2D" parent="CharacterBody"]
 modulate = Color(0.6485326, 0.49693096, 0.3968422, 1)
@@ -182,4 +49,7 @@ shape = SubResource("RectangleShape2D_6uclf")
 disabled = true
 debug_color = Color(0.7397895, 2.0094587e-06, 5.7756904e-07, 0.41960785)
 
-[connection signal="animation_changed" from="CharacterBody" to="CharacterBody/Eye" method="_on_character_body_animation_changed"]
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(3, 3)
+
+[connection signal="animation_changed" from="CharacterBody" to="CharacterBody" method="_on_animation_changed"]

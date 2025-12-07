@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="Raca" load_steps=2 format=3 uid="uid://gayhuleuolfc"]
+
+[ext_resource type="Script" uid="uid://bmwueexa4ghih" path="res://Classes/Raca.gd" id="1_g5ofn"]
+
+[resource]
+script = ExtResource("1_g5ofn")
+Race_Name = 3
+Max_Power_level_on_start = 2000
+Genetics = "Demon Clan"
+RaceLatentPower = 1.6
+lifespan = 200
+metadata/_custom_type_script = "uid://bmwueexa4ghih"

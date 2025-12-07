@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="Raca" load_steps=2 format=3 uid="uid://b2d75lv2e2t5f"]
+
+[ext_resource type="Script" uid="uid://bmwueexa4ghih" path="res://Classes/Raca.gd" id="1_0javt"]
+
+[resource]
+script = ExtResource("1_0javt")
+Race_Name = 2
+Max_Power_level_on_start = 10
+Genetics = "Furry"
+RaceLatentPower = 0.5
+lifespan = 18
+metadata/_custom_type_script = "uid://bmwueexa4ghih"

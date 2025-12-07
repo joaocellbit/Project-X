@@ -17,3 +17,7 @@ metadata/_preview_in_3d_space_ = true
 script = ExtResource("1_1odxm")
 planet_infos = SubResource("Resource_a75xc")
 noise = SubResource("FastNoiseLite_mtr83")
+
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("uid://bnbkh3esbul32")
+spawn_path = NodePath("..")

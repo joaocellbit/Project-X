@@ -7,4 +7,6 @@ script = ExtResource("1_3nxhd")
 Race_Name = 2
 Max_Power_level_on_start = 500
 Genetics = "Normal"
+RaceLatentPower = 1.0
+lifespan = 80
 metadata/_custom_type_script = "uid://bmwueexa4ghih"
