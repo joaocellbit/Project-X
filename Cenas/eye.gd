@@ -15,7 +15,7 @@ func _process(_delta: float) -> void:
 
 func _on_character_body_animation_changed() -> void:
 	if $"..".animation != "FlyNorth" or $"..".animation != "IdleNorth" or $"..".animation != "WalkNorth":
-		play($"..".animation)
+		animation = $"..".animation
 		frame = $"..".frame
 	else:
 		visible = false # Replace with function body.

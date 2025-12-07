@@ -2,10 +2,10 @@
 
 [ext_resource type="Script" uid="uid://csfqxu6ljs0w" path="res://Scripts/saiyajin.gd" id="1_os3aw"]
 [ext_resource type="Resource" uid="uid://b7nos1kk66klp" path="res://Racas/Saiyan.tres" id="2_os3aw"]
-[ext_resource type="SpriteFrames" uid="uid://c60yq7h45lfha" path="res://WhiteMale.tres" id="3_o4sbo"]
-[ext_resource type="Texture2D" uid="uid://c53f7tpdmlk0s" path="res://Eyes.png" id="4_omodc"]
+[ext_resource type="SpriteFrames" uid="uid://c60yq7h45lfha" path="res://Animaçoes/WhiteMale.tres" id="3_o4sbo"]
+[ext_resource type="Texture2D" uid="uid://c53f7tpdmlk0s" path="res://Icones/Eyes.png" id="4_omodc"]
 [ext_resource type="Script" uid="uid://dwrq8yrolg7xd" path="res://Cenas/eye.gd" id="5_0gjeo"]
-[ext_resource type="SpriteFrames" uid="uid://fwf5nytu3m8w" path="res://Tail.tres" id="6_pda0c"]
+[ext_resource type="SpriteFrames" uid="uid://fwf5nytu3m8w" path="res://Animaçoes/Tail.tres" id="6_pda0c"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_obmxy"]
 size = Vector2(12, 23)

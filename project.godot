@@ -14,7 +14,6 @@ config/name="Project X"
 run/main_scene="uid://w38ap2f2qv5y"
 config/features=PackedStringArray("4.5", "Forward Plus")
 run/max_fps=60
-config/icon="res://icon.svg"
 
 [autoload]
 
