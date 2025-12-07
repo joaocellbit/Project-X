@@ -6,6 +6,7 @@ class_name Player
 @export var race:Raca
 @export var Power_level:int
 @export var Sexo:sexo
+@export var Age:int
 
 func Set_race() -> void:
 	var Racas = race.NomeRaca.keys()
