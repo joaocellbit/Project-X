@@ -162,18 +162,17 @@ shape = SubResource("RectangleShape2D_obmxy")
 position = Vector2(0, -2)
 scale = Vector2(0.7591797, 0.85694444)
 sprite_frames = ExtResource("3_o4sbo")
-animation = &"WalkSouth"
-frame = 1
+animation = &"IdleSouth"
 
 [node name="Eye" type="AnimatedSprite2D" parent="CharacterBody"]
 sprite_frames = SubResource("SpriteFrames_isoqe")
-animation = &"FlySouth"
+animation = &"IdleSouth"
 script = ExtResource("5_0gjeo")
 
 [node name="Tail" type="AnimatedSprite2D" parent="CharacterBody"]
 modulate = Color(0.6485326, 0.49693096, 0.3968422, 1)
 sprite_frames = ExtResource("6_pda0c")
-animation = &"IdleWest"
+animation = &"IdleSouth"
 
 [node name="Punch_HitBox" type="CollisionShape2D" parent="."]
 visibility_layer = 2
