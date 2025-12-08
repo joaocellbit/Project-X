@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b8aft6ktoov58"
-path="res://.godot/imported/BaseWhiteMale.png-a08a303781b44c021620f9adc482a7af.ctex"
+uid="uid://btqlcjaw61nnm"
+path="res://.godot/imported/NewTanFemale.png-f08dd2a38bb06ff569ef601c3b67d1d6.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Icones/BaseWhiteMale.png"
-dest_files=["res://.godot/imported/BaseWhiteMale.png-a08a303781b44c021620f9adc482a7af.ctex"]
+source_file="res://Icones/Humanoid body/NewTanFemale.png"
+dest_files=["res://.godot/imported/NewTanFemale.png-f08dd2a38bb06ff569ef601c3b67d1d6.ctex"]
 
 [params]
 
