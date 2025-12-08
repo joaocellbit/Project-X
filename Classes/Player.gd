@@ -14,10 +14,18 @@ class_name Player
 @export var Reflexo:int #Aumenta a chance de desviar de golpes
 @export var magic:int #Chance de aprender técnicas magicas
 @export var LatentPower:float #Define o potencial da pessoa
+@onready var animationtree:Node #node do animation tree
+@onready var CoordAnima:Vector2 
+@onready var is_flying:bool
 
-func Set_race() -> void:
-	var _Racas = race.NomeRaca.keys()
-	
+func Set_animation() -> void:
+	var tree:Array [Node] = get_children()
+	for i in tree:
+		if i is AnimationTree:
+			animationtree = i
+
+
+
 	
 	
 	
@@ -26,4 +34,20 @@ enum sexo{
 }
 
 func _physics_process(_delta: float) -> void:
-	pass
+	var diry:float = Input.get_axis("ui_up", "ui_down")
+	var dirx:float = Input.get_axis("ui_left","ui_right")
+	var dir:Vector2 = Vector2(dirx,diry)
+	velocity = dir.normalized()*100
+	move_and_slide()
+	var playback = animationtree.get("parameters/StateMachine/playback")
+	if Input.is_action_just_pressed("Punch"):
+		playback.travel("Punch")
+	elif dir:
+		CoordAnima = Vector2(round(dir.x), round(dir.y))
+		playback.travel("Walk")
+		animationtree.set("parameters/StateMachine/Idle/blend_position", CoordAnima)
+		animationtree.set("parameters/StateMachine/Punch/blend_position", CoordAnima)
+		animationtree.set("parameters/StateMachine/Walk/blend_position", CoordAnima)
+	else:
+		playback.travel("Idle")
+	

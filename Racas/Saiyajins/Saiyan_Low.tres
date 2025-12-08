@@ -4,7 +4,6 @@
 
 [resource]
 script = ExtResource("1_fch71")
-Race_Name = 7
 Max_Power_level_on_start = 1000
 Genetics = "Low Class"
 RaceLatentPower = 1.1
