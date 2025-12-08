@@ -1,348 +1,18 @@
-[gd_scene load_steps=20 format=3 uid="uid://bnbkh3esbul32"]
+[gd_scene load_steps=10 format=3 uid="uid://bnbkh3esbul32"]
 
 [ext_resource type="Script" uid="uid://csfqxu6ljs0w" path="res://Scripts/saiyajin.gd" id="1_os3aw"]
 [ext_resource type="Resource" uid="uid://cppefq2i8l6ni" path="res://Racas/Saiyajins/Saiyan_Low.tres" id="2_o4sbo"]
-[ext_resource type="SpriteFrames" uid="uid://c60yq7h45lfha" path="res://Animaçoes/WhiteMale.tres" id="3_o4sbo"]
-[ext_resource type="SpriteFrames" uid="uid://c55dhh01dwlc6" path="res://Animaçoes/Eye.tres" id="4_o4sbo"]
-[ext_resource type="Script" uid="uid://ds2n8gus07syh" path="res://Scripts/character_body.gd" id="4_omodc"]
-[ext_resource type="SpriteFrames" uid="uid://q7nup6qq18kh" path="res://Animaçoes/Tail.tres" id="6_pda0c"]
-[ext_resource type="Texture2D" uid="uid://b8aft6ktoov58" path="res://Icones/Humanoid body/BaseWhiteMale.png" id="7_pda0c"]
+[ext_resource type="Texture2D" uid="uid://crifaix7bwnse" path="res://Icones/NewTails.png" id="5_yr6vn"]
+[ext_resource type="AnimationLibrary" uid="uid://cypqvwx8aqvlf" path="res://Animaçoes/Animaçoes basicas.res" id="6_o4sbo"]
+[ext_resource type="AnimationNodeBlendTree" uid="uid://fnmwocj5sokp" path="res://Animaçoes/animationtree.tres" id="7_omodc"]
+[ext_resource type="Texture2D" uid="uid://bnqsraa5wsdmj" path="res://Icones/Humanoid body/NewPaleMale.png" id="7_pda0c"]
 [ext_resource type="Texture2D" uid="uid://c53f7tpdmlk0s" path="res://Icones/Eyes.png" id="8_f23x7"]
-[ext_resource type="Texture2D" uid="uid://c53xv7rtiop78" path="res://Icones/Tails.png" id="9_t3uin"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_obmxy"]
 size = Vector2(16, 26)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6uclf"]
 size = Vector2(12, 11.000003)
-
-[sub_resource type="Animation" id="Animation_kl0kk"]
-resource_name = "IdleEast"
-length = 0.1250125
-step = 0.125
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Body:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [2]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Body/Eye:frame")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [2]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("Body/Tale:frame")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [2]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("Body/Tale:show_behind_parent")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [true]
-}
-
-[sub_resource type="Animation" id="Animation_vcdqa"]
-resource_name = "IdleNorth"
-step = 0.125
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Body:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [1]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Body/Eye:frame")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [1]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("Body/Tale:frame")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [1]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("Body/Tale:show_behind_parent")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
-}
-
-[sub_resource type="Animation" id="Animation_pda0c"]
-resource_name = "IdleSouth"
-length = 0.0897
-step = 0.0897
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Body:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [0]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Body/Eye:frame")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [0]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("Body/Tale:frame")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [0]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("Body/Tale:show_behind_parent")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [true]
-}
-
-[sub_resource type="Animation" id="Animation_t3uin"]
-resource_name = "IdleWest"
-length = 0.1250125
-step = 0.125
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Body:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [3]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Body/Eye:frame")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [3]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("Body/Tale:frame")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [3]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("Body/Tale:show_behind_parent")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [true]
-}
-
-[sub_resource type="Animation" id="Animation_f23x7"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Body:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [0]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Body/Eye:frame")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [0]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("Body/Tale:frame")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [0]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("Body/Tale:show_behind_parent")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [true]
-}
-
-[sub_resource type="Animation" id="Animation_putpc"]
-resource_name = "WalkSouth"
-length = 0.80002004
-loop_mode = 1
-step = 0.2
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Body:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.19764821, 0.4014093, 0.6025066),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 1,
-"values": [0, 4, 0, 12]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Body/Eye:frame")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.20172349, 0.40140936, 0.60313284),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 1,
-"values": [0, 4, 0, 4]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("Body/Tale:frame")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0, 0.2037611, 0.4, 0.5929448),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 1,
-"values": [0, 4, 0, 7]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("Body/Tale:show_behind_parent")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [true]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_putpc"]
-_data = {
-&"IdleEast": SubResource("Animation_kl0kk"),
-&"IdleNorth": SubResource("Animation_vcdqa"),
-&"IdleSouth": SubResource("Animation_pda0c"),
-&"IdleWest": SubResource("Animation_t3uin"),
-&"RESET": SubResource("Animation_f23x7"),
-&"WalkSouth": SubResource("Animation_putpc")
-}
-
-[sub_resource type="AnimationRootNode" id="AnimationRootNode_pfeqh"]
 
 [node name="Player_Saiyan" type="CharacterBody2D"]
 script = ExtResource("1_os3aw")
@@ -356,22 +26,23 @@ light_mask = 2
 position = Vector2(0, -1)
 shape = SubResource("RectangleShape2D_obmxy")
 
-[node name="CharacterBody" type="AnimatedSprite2D" parent="."]
-visible = false
-position = Vector2(0, -2)
-scale = Vector2(0.7591797, 0.85694444)
-sprite_frames = ExtResource("3_o4sbo")
-animation = &"IdleSouth"
-script = ExtResource("4_omodc")
+[node name="Body" type="Sprite2D" parent="."]
+position = Vector2(0, -4)
+texture = ExtResource("7_pda0c")
+hframes = 11
+vframes = 11
 
-[node name="Eye" type="AnimatedSprite2D" parent="CharacterBody"]
-sprite_frames = ExtResource("4_o4sbo")
-animation = &"IdleSouth"
+[node name="Eye" type="Sprite2D" parent="Body"]
+texture = ExtResource("8_f23x7")
+hframes = 7
+vframes = 7
 
-[node name="Tail" type="AnimatedSprite2D" parent="CharacterBody"]
-modulate = Color(0.6485326, 0.49693096, 0.3968422, 1)
-sprite_frames = ExtResource("6_pda0c")
-animation = &"IdleSouth"
+[node name="Tale" type="Sprite2D" parent="Body"]
+modulate = Color(0.99999994, 0.46255273, 0.08920696, 1)
+show_behind_parent = true
+texture = ExtResource("5_yr6vn")
+hframes = 7
+vframes = 7
 
 [node name="Punch_HitBox" type="CollisionShape2D" parent="."]
 visibility_layer = 2
@@ -384,32 +55,12 @@ debug_color = Color(0.7397895, 2.0094587e-06, 5.7756904e-07, 0.41960785)
 [node name="Camera2D" type="Camera2D" parent="."]
 zoom = Vector2(3, 3)
 
-[node name="Body" type="Sprite2D" parent="."]
-position = Vector2(0, -4)
-texture = ExtResource("7_pda0c")
-hframes = 7
-vframes = 7
-
-[node name="Eye" type="Sprite2D" parent="Body"]
-texture = ExtResource("8_f23x7")
-hframes = 7
-vframes = 7
-
-[node name="Tale" type="Sprite2D" parent="Body"]
-modulate = Color(0.64705884, 0.49803922, 0.39607844, 1)
-show_behind_parent = true
-texture = ExtResource("9_t3uin")
-hframes = 7
-vframes = 7
-
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
-&"": SubResource("AnimationLibrary_putpc")
+&"": ExtResource("6_o4sbo")
 }
 autoplay = "IdleSouth"
 
 [node name="AnimationTree" type="AnimationTree" parent="."]
-tree_root = SubResource("AnimationRootNode_pfeqh")
+tree_root = ExtResource("7_omodc")
 anim_player = NodePath("../AnimationPlayer")
-
-[connection signal="animation_changed" from="CharacterBody" to="CharacterBody" method="_on_animation_changed"]

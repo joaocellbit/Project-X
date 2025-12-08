@@ -28,6 +28,7 @@ layout_mode = 0
 offset_right = 43.5
 offset_bottom = 19.5
 action_mode = 0
+text = "Host"
 
 [node name="Join" type="Button" parent="CanvasLayer/Control"]
 layout_mode = 0
@@ -35,6 +36,7 @@ offset_left = 75.5
 offset_top = -0.5
 offset_right = 120.0
 offset_bottom = 20.0
+text = "Join"
 
 [connection signal="pressed" from="CanvasLayer/Control/Hostear" to="." method="_on_hostear_pressed"]
 [connection signal="pressed" from="CanvasLayer/Control/Join" to="." method="_on_join_pressed"]

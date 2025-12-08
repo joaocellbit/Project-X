@@ -16,13 +16,14 @@ class_name Player
 @export var LatentPower:float #Define o potencial da pessoa
 
 func Set_race() -> void:
-	var Racas = race.NomeRaca.keys()
-	print(Racas[race.Race_Name])
+	var _Racas = race.NomeRaca.keys()
+	
+	
 	
 	
 enum sexo{
 	M,F
 }
 
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	pass
