@@ -1,6 +1,8 @@
 extends Node
 
-
+@onready var playerId
+@onready var player_planet:Dictionary  # player_id -> planet_id
+@onready var Planet_player:Dictionary  # planet_id -> Array[player_id]
 @onready var Server = ENetMultiplayerPeer.new()
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -19,7 +21,7 @@ func criar_server(Porta:int) -> void:
 	multiplayer.multiplayer_peer = Server
 	print("ok")
 	multiplayer.peer_connected.connect(New_connection)
-	
+
 
 
 func criar_cliente(ip:String, Porta:int) -> void:

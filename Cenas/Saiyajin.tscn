@@ -19,6 +19,7 @@ script = ExtResource("1_os3aw")
 Nome = "Saiyan"
 Max_Health = 100
 race = ExtResource("2_o4sbo")
+Sexo = 1
 metadata/_custom_type_script = "uid://blc4ckw5ovshq"
 
 [node name="CharacterHitbox" type="CollisionShape2D" parent="."]
@@ -66,4 +67,4 @@ tree_root = ExtResource("7_omodc")
 anim_player = NodePath("../AnimationPlayer")
 parameters/StateMachine/Idle/blend_position = Vector2(0, 0.0017762184)
 parameters/StateMachine/Punch/blend_position = Vector2(0, -0.98657715)
-parameters/StateMachine/Walk/blend_position = Vector2(0, 0)
+parameters/StateMachine/Walk/blend_position = Vector2(-0.0063796043, 0.5336323)

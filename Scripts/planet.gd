@@ -1,5 +1,5 @@
 extends Node2D
-
+@export var planetid:int
 @export var planet_name:String
 @export var planet_infos:Planets
 @export var noise:Noise

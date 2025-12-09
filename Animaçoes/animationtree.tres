@@ -208,9 +208,10 @@ states/Train/position = Vector2(340.57666, 235)
 states/Walk/node = SubResource("AnimationNodeBlendSpace2D_6upa7")
 states/Walk/position = Vector2(423.57666, 159)
 transitions = ["Start", "Idle", SubResource("AnimationNodeStateMachineTransition_gtern"), "Idle", "Walk", SubResource("AnimationNodeStateMachineTransition_buivq"), "Walk", "Idle", SubResource("AnimationNodeStateMachineTransition_kdxxo"), "Idle", "Punch", SubResource("AnimationNodeStateMachineTransition_5du2l"), "Punch", "Idle", SubResource("AnimationNodeStateMachineTransition_3l5gv"), "Walk", "Punch", SubResource("AnimationNodeStateMachineTransition_4v3aa"), "Punch", "Walk", SubResource("AnimationNodeStateMachineTransition_32xdc"), "Idle", "Meditate", SubResource("AnimationNodeStateMachineTransition_0u5b4"), "Meditate", "Idle", SubResource("AnimationNodeStateMachineTransition_no7l5"), "Punch", "Meditate", SubResource("AnimationNodeStateMachineTransition_okbt1"), "Meditate", "Punch", SubResource("AnimationNodeStateMachineTransition_knrnp"), "Walk", "Meditate", SubResource("AnimationNodeStateMachineTransition_gqtx5"), "Meditate", "Walk", SubResource("AnimationNodeStateMachineTransition_nyjxh"), "Idle", "Train", SubResource("AnimationNodeStateMachineTransition_tvj3u"), "Train", "Idle", SubResource("AnimationNodeStateMachineTransition_1eprr"), "Walk", "Train", SubResource("AnimationNodeStateMachineTransition_oavgm"), "Train", "Walk", SubResource("AnimationNodeStateMachineTransition_4tyrk"), "Meditate", "Train", SubResource("AnimationNodeStateMachineTransition_drmur"), "Train", "Meditate", SubResource("AnimationNodeStateMachineTransition_ea1oc"), "Punch", "Train", SubResource("AnimationNodeStateMachineTransition_b1hh8"), "Train", "Punch", SubResource("AnimationNodeStateMachineTransition_64nmn")]
-graph_offset = Vector2(-314.42334, 12)
+graph_offset = Vector2(-262.42334, 105)
 
 [resource]
+graph_offset = Vector2(-390.93887, 10.861511)
 nodes/StateMachine/node = SubResource("AnimationNodeStateMachine_mpra4")
 nodes/StateMachine/position = Vector2(40, 60)
 node_connections = [&"output", 0, &"StateMachine"]

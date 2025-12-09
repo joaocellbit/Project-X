@@ -1,6 +1,7 @@
 extends CharacterBody2D
 class_name Player
 
+@export var id:int
 @export var Nome:String
 @export var Max_Health:int
 @export var race:Raca
@@ -24,11 +25,9 @@ func Set_animation() -> void:
 		if i is AnimationTree:
 			animationtree = i
 
+func Set_id() -> void:
+	id = multiplayer.get_unique_id()
 
-
-	
-	
-	
 enum sexo{
 	M,F
 }
@@ -37,7 +36,7 @@ func _physics_process(_delta: float) -> void:
 	var diry:float = Input.get_axis("ui_up", "ui_down")
 	var dirx:float = Input.get_axis("ui_left","ui_right")
 	var dir:Vector2 = Vector2(dirx,diry)
-	velocity = dir.normalized()*100
+	velocity = dir.normalized()*Agilidade
 	move_and_slide()
 	var playback = animationtree.get("parameters/StateMachine/playback")
 	if Input.is_action_just_pressed("Punch"):
