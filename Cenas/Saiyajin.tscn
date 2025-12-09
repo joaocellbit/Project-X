@@ -19,7 +19,6 @@ script = ExtResource("1_os3aw")
 Nome = "Saiyan"
 Max_Health = 100
 race = ExtResource("2_o4sbo")
-Sexo = 1
 metadata/_custom_type_script = "uid://blc4ckw5ovshq"
 
 [node name="CharacterHitbox" type="CollisionShape2D" parent="."]
