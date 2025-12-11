@@ -1,11 +1,11 @@
 extends Node
-@onready var playerid:Dictionary # player_id -> nome
-@onready var player_state:Dictionary # player_id -> body,clothes,hair etc
-@onready var planetid:Dictionary # planet_id -> nome
-@onready var player_planet:Dictionary  # player_id -> planet_id
-@onready var Planet_player:Dictionary  # planet_id -> Array[player_id]
-@onready var npc_planet:Dictionary # npc_id -> planet_id
-@onready var planet_npc:Dictionary # planet_id -> array[Npc_id]
+@onready var playerid:Dictionary[int, String] # player_id -> nome
+@onready var player_state:Dictionary[int,Dictionary] # player_id -> body,clothes,hair etc
+@onready var planetid:Dictionary[int,String] # planet_id -> nome
+@onready var player_planet:Dictionary[int,int]  # player_id -> planet_id
+@onready var Planet_player:Dictionary[int,Array]  # planet_id -> Array[player_id]
+@onready var npc_planet:Dictionary[int,int] # npc_id -> planet_id
+@onready var planet_npc:Dictionary[int, Array] # planet_id -> array[Npc_id]
 @onready var Server = ENetMultiplayerPeer.new()
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -32,8 +32,18 @@ func criar_server(Porta:int) -> void:
 func criar_cliente(ip:String, Porta:int) -> void:
 	Server.create_client(ip,Porta)
 	multiplayer.multiplayer_peer = Server
+	multiplayer.connected_to_server.connect(client_info)
 	
-
+func client_info():
+	print("enviando dados do cliente de id: ", multiplayer.get_unique_id())
+	var state_test:Dictionary = {"nome" = "Test", "Raca" = "test"}
+	rpc_id(1, "send_client_info", multiplayer.get_unique_id(), state_test)
+	
+@rpc("any_peer","call_remote","reliable")
+func send_client_info(id:int,data:Dictionary):
+	player_state[id] = data
+	print(player_state ," ", multiplayer.get_unique_id())
+	
 func New_connection(id) -> void:
 	print(id)
 	playerid[id] = "test"
