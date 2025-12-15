@@ -15,13 +15,16 @@ size = Vector2(16, 26)
 size = Vector2(12, 11.000003)
 
 [node name="Player_Saiyan" type="CharacterBody2D"]
+collision_layer = 2
 script = ExtResource("1_os3aw")
 Nome = "Saiyan"
 Max_Health = 100
 race = ExtResource("2_o4sbo")
 metadata/_custom_type_script = "uid://blc4ckw5ovshq"
 
-[node name="CharacterHitbox" type="CollisionShape2D" parent="."]
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CharacterHitbox" type="CollisionShape2D" parent="Area2D"]
 light_mask = 2
 position = Vector2(0, -1)
 shape = SubResource("RectangleShape2D_obmxy")

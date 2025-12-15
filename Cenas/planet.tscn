@@ -1,8 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://bwkoudjq1tqqj"]
+[gd_scene load_steps=5 format=3 uid="uid://bwkoudjq1tqqj"]
 
 [ext_resource type="Script" uid="uid://ympak7rpeqpm" path="res://Scripts/planet.gd" id="1_1odxm"]
 [ext_resource type="Script" uid="uid://db64imkxfd6lv" path="res://Classes/Planets.gd" id="2_mtr83"]
-[ext_resource type="Texture2D" uid="uid://cinpu1trdy04x" path="res://Icones/Humanoid body/NewBlackFemale.png" id="3_q6mly"]
 
 [sub_resource type="Resource" id="Resource_a75xc"]
 script = ExtResource("2_mtr83")
@@ -18,6 +17,3 @@ metadata/_preview_in_3d_space_ = true
 script = ExtResource("1_1odxm")
 planet_infos = SubResource("Resource_a75xc")
 noise = SubResource("FastNoiseLite_mtr83")
-
-[node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("3_q6mly")

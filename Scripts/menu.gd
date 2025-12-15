@@ -12,8 +12,14 @@ func _process(_delta: float) -> void:
 
 
 func _on_hostear_pressed() -> void:
-	Server.criar_server(30000) # Replace with function body.
+	if Server.criar_server(30000):
+		_fechar_menu()
+	 # Replace with function body.
 
 
 func _on_join_pressed() -> void:
-	Server.criar_cliente("127.0.0.1",30000) # Replace with function body.
+	Server.criar_cliente("127.0.0.1",30000)
+	Server.conectado.connect(_fechar_menu) # Replace with function body.
+
+func _fechar_menu() ->void:
+	queue_free()
