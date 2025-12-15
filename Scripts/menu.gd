@@ -1,6 +1,6 @@
 extends Node2D
-
-
+@onready var planeta = preload("res://Cenas/planet.tscn")
+@onready var jogador = preload("res://Cenas/Saiyajin.tscn")
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	pass# Replace with function body.
@@ -14,12 +14,20 @@ func _process(_delta: float) -> void:
 func _on_hostear_pressed() -> void:
 	if Server.criar_server(30000):
 		_fechar_menu()
-	 # Replace with function body.
+		$"..".add_child(planeta.instantiate())
+		var personagem = jogador.instantiate()
+		personagem.name = str(multiplayer.get_unique_id())
+		$"..".get_node("Planet").add_child(personagem)
 
 
 func _on_join_pressed() -> void:
 	Server.criar_cliente("127.0.0.1",30000)
-	Server.conectado.connect(_fechar_menu) # Replace with function body.
+	Server.conectado.connect(_fechar_menu)
+	$"..".add_child(planeta.instantiate())
+	var personagem = jogador.instantiate()
+	personagem.name = str(multiplayer.get_unique_id())
+	personagem.set_multiplayer_authority(multiplayer.get_unique_id())
+	$"..".get_node("Planet").add_child(personagem) # Replace with function body.
 
 func _fechar_menu() ->void:
 	queue_free()

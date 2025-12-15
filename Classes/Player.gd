@@ -33,20 +33,33 @@ enum sexo{
 }
 
 func _physics_process(_delta: float) -> void:
-	var diry:float = Input.get_axis("ui_up", "ui_down")
-	var dirx:float = Input.get_axis("ui_left","ui_right")
-	var dir:Vector2 = Vector2(dirx,diry)
-	velocity = dir.normalized()*Agilidade
-	move_and_slide()
+	if is_multiplayer_authority():
+		var diry:float = Input.get_axis("ui_up", "ui_down")
+		var dirx:float = Input.get_axis("ui_left","ui_right")
+		var dir:Vector2 = Vector2(dirx,diry)
+		velocity = dir.normalized()*100
+		move_and_slide()
+		
+		var playback = animationtree.get("parameters/StateMachine/playback")
+		if dir:
+			CoordAnima = Vector2(round(dir.x), round(dir.y))
+		update_animation(CoordAnima, velocity)
+		atualizar_posicao.rpc(velocity,position,CoordAnima)
+		if Input.is_action_just_pressed("Punch"):
+			playback.travel("Punch")
+	
+@rpc("authority","call_remote","reliable")
+func atualizar_posicao(vel:Vector2, posicao:Vector2, coordanima_server:Vector2):
+	position = posicao
+	update_animation(coordanima_server, vel)
+	
+
+func update_animation(coordanima:Vector2, vel:Vector2 ):
 	var playback = animationtree.get("parameters/StateMachine/playback")
-	if Input.is_action_just_pressed("Punch"):
-		playback.travel("Punch")
-	elif dir:
-		CoordAnima = Vector2(round(dir.x), round(dir.y))
+	if vel:
 		playback.travel("Walk")
-		animationtree.set("parameters/StateMachine/Idle/blend_position", CoordAnima)
-		animationtree.set("parameters/StateMachine/Punch/blend_position", CoordAnima)
-		animationtree.set("parameters/StateMachine/Walk/blend_position", CoordAnima)
+		animationtree.set("parameters/StateMachine/Idle/blend_position", coordanima)
+		animationtree.set("parameters/StateMachine/Punch/blend_position", coordanima)
+		animationtree.set("parameters/StateMachine/Walk/blend_position", coordanima)
 	else:
 		playback.travel("Idle")
-	

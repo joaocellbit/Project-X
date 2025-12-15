@@ -8,6 +8,7 @@ extends Node
 @onready var planet_npc:Dictionary[int, Array] # planet_id -> array[Npc_id]
 @onready var Server = ENetMultiplayerPeer.new()
 signal conectado
+@onready var scene = get_tree().root.get_node("MainWorld")
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	pass
@@ -41,6 +42,9 @@ func client_info() ->void:
 	conectado.emit()
 	multiplayer.connected_to_server.disconnect(client_info)
 	print("enviando dados do cliente de id: ", multiplayer.get_unique_id())
+	var perso_adm = preload("res://Cenas/Saiyajin.tscn").instantiate()
+	perso_adm.name = str(1)
+	scene.get_node("Planet").add_child(perso_adm)
 	var state_test:Dictionary = {"nome" = "Test", "Raca" = "test"}
 	rpc_id(1, "send_client_info", multiplayer.get_unique_id(), state_test)
 	
@@ -54,6 +58,13 @@ func New_connection(id) -> void:
 	playerid[id] = "test"
 	print(playerid,  multiplayer.get_unique_id())
 	rpc("update_client", playerid)
+	spawn_character(id)
+
+func spawn_character(id:int):
+	var perso = preload("res://Cenas/Saiyajin.tscn").instantiate()
+	perso.name = str(id)
+	perso.set_multiplayer_authority(id)
+	scene.get_node("Planet").add_child(perso)
 
 @rpc("authority","call_remote","reliable")
 func update_client(ids:Dictionary):
