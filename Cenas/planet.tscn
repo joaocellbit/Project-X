@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://bwkoudjq1tqqj"]
+[gd_scene format=3 uid="uid://bwkoudjq1tqqj"]
 
 [ext_resource type="Script" uid="uid://ympak7rpeqpm" path="res://Scripts/planet.gd" id="1_1odxm"]
 [ext_resource type="Script" uid="uid://db64imkxfd6lv" path="res://Classes/Planets.gd" id="2_mtr83"]
@@ -13,7 +13,7 @@ metadata/_custom_type_script = "uid://db64imkxfd6lv"
 noise_type = 3
 metadata/_preview_in_3d_space_ = true
 
-[node name="Planet" type="Node2D"]
+[node name="Planet" type="Node2D" unique_id=1615054678]
 script = ExtResource("1_1odxm")
 planet_infos = SubResource("Resource_a75xc")
 noise = SubResource("FastNoiseLite_mtr83")

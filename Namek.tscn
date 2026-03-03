@@ -1,0 +1,22 @@
+[gd_scene format=3 uid="uid://dw4bkcch4ufcc"]
+
+[ext_resource type="Script" uid="uid://d3hlq0m4x7fpq" path="res://namek.gd" id="1_p6xhq"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8liir"]
+size = Vector2(16, 26)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ryr8q"]
+
+[node name="Player" type="CharacterBody2D" unique_id=1932059797]
+script = ExtResource("1_p6xhq")
+metadata/_custom_type_script = "uid://blc4ckw5ovshq"
+
+[node name="Area2D" type="Area2D" parent="." unique_id=148862108]
+
+[node name="CharacterHitbox" type="CollisionShape2D" parent="Area2D" unique_id=746501824]
+light_mask = 2
+position = Vector2(0, -1)
+shape = SubResource("RectangleShape2D_8liir")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1993474032]
+shape = SubResource("RectangleShape2D_ryr8q")

@@ -1,7 +1,8 @@
-[gd_scene load_steps=10 format=3 uid="uid://bnbkh3esbul32"]
+[gd_scene format=3 uid="uid://bnbkh3esbul32"]
 
 [ext_resource type="Script" uid="uid://csfqxu6ljs0w" path="res://Scripts/saiyajin.gd" id="1_os3aw"]
 [ext_resource type="Resource" uid="uid://cppefq2i8l6ni" path="res://Racas/Saiyajins/Saiyan_Low.tres" id="2_o4sbo"]
+[ext_resource type="Script" uid="uid://cdubnttq3tyvg" path="res://Scripts/CharacterHitbox.cs" id="3_0gjeo"]
 [ext_resource type="Texture2D" uid="uid://crifaix7bwnse" path="res://Icones/NewTails.png" id="5_yr6vn"]
 [ext_resource type="AnimationLibrary" uid="uid://cypqvwx8aqvlf" path="res://Animaçoes/Animaçoes basicas.res" id="6_o4sbo"]
 [ext_resource type="AnimationNodeBlendTree" uid="uid://fnmwocj5sokp" path="res://Animaçoes/animationtree.tres" id="7_omodc"]
@@ -14,7 +15,7 @@ size = Vector2(16, 26)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6uclf"]
 size = Vector2(12, 11.000003)
 
-[node name="Player_Saiyan" type="CharacterBody2D"]
+[node name="Player_Saiyan" type="CharacterBody2D" unique_id=730790770]
 collision_layer = 2
 script = ExtResource("1_os3aw")
 Nome = "Saiyan"
@@ -22,32 +23,33 @@ Max_Health = 100
 race = ExtResource("2_o4sbo")
 metadata/_custom_type_script = "uid://blc4ckw5ovshq"
 
-[node name="Area2D" type="Area2D" parent="."]
+[node name="Area2D" type="Area2D" parent="." unique_id=1519812973]
 
-[node name="CharacterHitbox" type="CollisionShape2D" parent="Area2D"]
+[node name="CharacterHitbox" type="CollisionShape2D" parent="Area2D" unique_id=2002150794]
 light_mask = 2
 position = Vector2(0, -1)
 shape = SubResource("RectangleShape2D_obmxy")
+script = ExtResource("3_0gjeo")
 
-[node name="Body" type="Sprite2D" parent="."]
+[node name="Body" type="Sprite2D" parent="." unique_id=1994644775]
 position = Vector2(0, -4)
 texture = ExtResource("7_pda0c")
 hframes = 11
 vframes = 11
 
-[node name="Eye" type="Sprite2D" parent="Body"]
+[node name="Eye" type="Sprite2D" parent="Body" unique_id=78732556]
 texture = ExtResource("8_f23x7")
 hframes = 7
 vframes = 7
 
-[node name="Tale" type="Sprite2D" parent="Body"]
+[node name="Tale" type="Sprite2D" parent="Body" unique_id=283349713]
 modulate = Color(0.99999994, 0.46255273, 0.08920696, 1)
 show_behind_parent = true
 texture = ExtResource("5_yr6vn")
 hframes = 7
 vframes = 7
 
-[node name="Punch_HitBox" type="CollisionShape2D" parent="."]
+[node name="Punch_HitBox" type="CollisionShape2D" parent="." unique_id=1288801505]
 visibility_layer = 2
 position = Vector2(5.04871e-29, 18.999996)
 scale = Vector2(0.99999994, 0.99999994)
@@ -55,16 +57,14 @@ shape = SubResource("RectangleShape2D_6uclf")
 disabled = true
 debug_color = Color(0.7397895, 2.0094587e-06, 5.7756904e-07, 0.41960785)
 
-[node name="Camera2D" type="Camera2D" parent="."]
+[node name="Camera2D" type="Camera2D" parent="." unique_id=479686989]
 zoom = Vector2(3, 3)
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-libraries = {
-&"": ExtResource("6_o4sbo")
-}
-autoplay = "IdleSouth"
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=2096194134]
+libraries/ = ExtResource("6_o4sbo")
+autoplay = &"IdleSouth"
 
-[node name="AnimationTree" type="AnimationTree" parent="."]
+[node name="AnimationTree" type="AnimationTree" parent="." unique_id=700353655]
 tree_root = ExtResource("7_omodc")
 anim_player = NodePath("../AnimationPlayer")
 parameters/StateMachine/Idle/blend_position = Vector2(0, 0.0017762184)

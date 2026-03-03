@@ -1,4 +1,4 @@
-[gd_resource type="AnimationNodeBlendTree" load_steps=55 format=3 uid="uid://fnmwocj5sokp"]
+[gd_resource type="AnimationNodeBlendTree" format=3 uid="uid://fnmwocj5sokp"]
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_i243o"]
 animation = &"IdleWest"
