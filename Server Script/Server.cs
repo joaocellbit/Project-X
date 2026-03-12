@@ -155,6 +155,9 @@ public partial class Server : Node
 			return;
 		}
 		Node playertoremove = planetplayerin.GetNodeOrNull(id.ToString());
+		if(playertoremove == null){
+			return;
+		}
 		playertoremove.QueueFree();
 	
 	}
