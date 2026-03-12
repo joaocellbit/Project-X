@@ -6,10 +6,10 @@ public partial class Server : Node
 	private readonly PackedScene _planetScene = ResourceLoader.Load<PackedScene>("res://Cenas/planet.tscn");
 	private readonly PackedScene _playerScene = ResourceLoader.Load<PackedScene>("res://Cenas/Saiyajin.tscn");
 
-	public Dictionary<int, string> playerid = new();
-	public Dictionary<int, Dictionary> player_state = new();
+	public Dictionary<long, string> playerid = new();
+	public Dictionary<long, Dictionary> player_state = new();
 	public Dictionary<int, string> planetid = new();
-	public Dictionary<int, int> player_planet = new();
+	public Dictionary<long, int> player_planet = new();
 	public Dictionary<int, Array> Planet_player = new();
 	public Dictionary<int, int> npc_planet = new();
 	public Dictionary<int, Array> planet_npc = new();
@@ -39,7 +39,7 @@ public partial class Server : Node
 
 		Multiplayer.MultiplayerPeer = ServerPeer;
 		GD.Print("ok");
-		playerid[1] = "server";
+		playerid[1L] = "server";
 		GD.Print(playerid);
 		Multiplayer.PeerConnected += New_connection;
 		update_client(BuildPlayerIdDictionary());
@@ -52,6 +52,7 @@ public partial class Server : Node
 		Multiplayer.MultiplayerPeer = ServerPeer;
 		Multiplayer.ConnectedToServer += client_info;
 		Multiplayer.ServerDisconnected += End_connection;
+		Multiplayer.PeerDisconnected += Disconnected;
 	}
 
 	public void client_info()
@@ -65,11 +66,11 @@ public partial class Server : Node
 			{ "nome", "Test" },
 			{ "Raca", "test" },
 		};
-		RpcId(1, nameof(send_client_info), Multiplayer.GetUniqueId(), state_test);
+		RpcId(1L, nameof(send_client_info), Multiplayer.GetUniqueId(), state_test);
 	}
 
 	[Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = false, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
-	public void send_client_info(int id, Dictionary data)
+	public void send_client_info(long id, Dictionary data)
 	{
 		player_state[id] = data;
 		GD.Print(player_state, " ", Multiplayer.GetUniqueId());
@@ -77,14 +78,14 @@ public partial class Server : Node
 
 	public void New_connection(long id)
 	{
-		int peerId = (int)id;
+		long peerId = id;
 		GD.Print(peerId);
 		playerid[peerId] = "test";
 		GD.Print(playerid, Multiplayer.GetUniqueId());
 		Rpc(nameof(update_client), BuildPlayerIdDictionary());
 	}
 
-	public void spawn_character(int id)
+	public void spawn_character(long id)
 	{
 		Node planetNode = EnsurePlanetLoaded();
 		if (planetNode.GetNodeOrNull(id.ToString()) != null)
@@ -94,7 +95,7 @@ public partial class Server : Node
 
 		Node perso = _playerScene.Instantiate();
 		perso.Name = id.ToString();
-		perso.SetMultiplayerAuthority(id);
+		perso.SetMultiplayerAuthority(checked((int)id));
 		planetNode.AddChild(perso);
 	}
 
@@ -102,10 +103,10 @@ public partial class Server : Node
 	public void update_client(Dictionary ids)
 	{
 		EnsurePlanetLoaded();
-		playerid = new Dictionary<int, string>();
+		playerid = new Dictionary<long, string>();
 		foreach (Variant key in ids.Keys)
 		{
-			int peerId = (int)key.AsInt32();
+			long peerId = key.AsInt64();
 			playerid[peerId] = ids[key].AsString();
 			spawn_character(peerId);
 		}
@@ -136,11 +137,15 @@ public partial class Server : Node
 		_scene.AddChild(planetNode);
 		return planetNode;
 	}
-
+	public void Disconnected(long id){
+		
+		
+	
+	}
 	private Dictionary BuildPlayerIdDictionary()
 	{
 		Dictionary ids = new();
-		foreach (int playerId in playerid.Keys)
+		foreach (long playerId in playerid.Keys)
 		{
 			ids[playerId] = playerid[playerId];
 		}
