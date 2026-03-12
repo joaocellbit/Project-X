@@ -21,7 +21,7 @@ run/max_fps=60
 
 [autoload]
 
-Server="*res://Server Script/Server.gd"
+Server="*res://Server Script/Server.cs"
 
 [dotnet]
 
