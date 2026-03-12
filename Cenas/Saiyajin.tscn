@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://bnbkh3esbul32"]
 
-[ext_resource type="Script" uid="uid://csfqxu6ljs0w" path="res://Scripts/saiyajin.gd" id="1_os3aw"]
+[ext_resource type="Script" uid="uid://bodg52vtdu75a" path="res://Scripts/saiyajin.cs" id="1_os3aw"]
 [ext_resource type="Resource" uid="uid://cppefq2i8l6ni" path="res://Racas/Saiyajins/Saiyan_Low.tres" id="2_o4sbo"]
 [ext_resource type="Script" uid="uid://cdubnttq3tyvg" path="res://Scripts/CharacterHitbox.cs" id="3_0gjeo"]
 [ext_resource type="Texture2D" uid="uid://crifaix7bwnse" path="res://Icones/NewTails.png" id="5_yr6vn"]
@@ -21,7 +21,6 @@ script = ExtResource("1_os3aw")
 Nome = "Saiyan"
 Max_Health = 100
 race = ExtResource("2_o4sbo")
-metadata/_custom_type_script = "uid://blc4ckw5ovshq"
 
 [node name="Area2D" type="Area2D" parent="." unique_id=1519812973]
 
