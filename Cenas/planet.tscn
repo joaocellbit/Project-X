@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://bwkoudjq1tqqj"]
 
-[ext_resource type="Script" path="res://Scripts/planet.cs" id="1_1odxm"]
-[ext_resource type="Script" path="res://Classes/Planets.cs" id="2_mtr83"]
+[ext_resource type="Script" uid="uid://dncwrh7iops3l" path="res://Scripts/planet.cs" id="1_1odxm"]
+[ext_resource type="Script" uid="uid://c43g07kmohs10" path="res://Classes/Planets.cs" id="2_mtr83"]
 
 [sub_resource type="Resource" id="Resource_a75xc"]
 script = ExtResource("2_mtr83")

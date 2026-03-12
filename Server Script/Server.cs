@@ -22,6 +22,7 @@ public partial class Server : Node
 	public override void _Ready()
 	{
 		_scene = GetTree().Root.GetNode("MainWorld");
+		Multiplayer.PeerDisconnected += Disconnected;
 	}
 
 	public override void _Process(double delta)
@@ -42,6 +43,7 @@ public partial class Server : Node
 		playerid[1L] = "server";
 		GD.Print(playerid);
 		Multiplayer.PeerConnected += New_connection;
+		
 		update_client(BuildPlayerIdDictionary());
 		return true;
 	}
@@ -52,7 +54,7 @@ public partial class Server : Node
 		Multiplayer.MultiplayerPeer = ServerPeer;
 		Multiplayer.ConnectedToServer += client_info;
 		Multiplayer.ServerDisconnected += End_connection;
-		Multiplayer.PeerDisconnected += Disconnected;
+	
 	}
 
 	public void client_info()
@@ -139,7 +141,21 @@ public partial class Server : Node
 	}
 	public void Disconnected(long id){
 		
-		
+		GD.Print("o id: ", id, " saiu!");
+		foreach(long i in playerid.Keys)
+		{
+			if(i == id)
+			{
+				playerid.Remove(id);
+				GD.Print(playerid);
+			}
+		}
+		Node planetplayerin = _scene.GetNodeOrNull("Planet");
+		if(planetplayerin == null){
+			return;
+		}
+		Node playertoremove = planetplayerin.GetNodeOrNull(id.ToString());
+		playertoremove.QueueFree();
 	
 	}
 	private Dictionary BuildPlayerIdDictionary()

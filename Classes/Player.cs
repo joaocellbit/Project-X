@@ -149,7 +149,7 @@ public partial class Player : CharacterBody2D
 			animationtree.Set("parameters/StateMachine/Walk/blend_position", coordanima);
 			return;
 		}
-
+		animationtree.Set("parameters/StateMachine/Idle/blend_position", coordanima);
 		playback.Travel("Idle");
 	}
 
