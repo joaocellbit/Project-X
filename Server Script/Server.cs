@@ -62,12 +62,15 @@ public partial class Server : Node
 		EnsurePlanetLoaded();
 		EmitSignal(SignalName.Conectado);
 		Multiplayer.ConnectedToServer -= client_info;
-		GD.Print("enviando dados do cliente de id: ", Multiplayer.GetUniqueId());
+		long id = Multiplayer.GetUniqueId();
+		GD.Print("enviando dados do cliente de id: ", id);
 		Dictionary state_test = new Dictionary
 		{
 			{ "nome", "Test" },
 			{ "Raca", "test" },
 		};
+		player_state[id] = state_test;
+		GD.Print("Player state do cliente: ", player_state);
 		RpcId(1L, nameof(send_client_info), Multiplayer.GetUniqueId(), state_test);
 	}
 
@@ -142,14 +145,10 @@ public partial class Server : Node
 	public void Disconnected(long id){
 		
 		GD.Print("o id: ", id, " saiu!");
-		foreach(long i in playerid.Keys)
-		{
-			if(i == id)
-			{
-				playerid.Remove(id);
-				GD.Print(playerid);
-			}
-		}
+		
+		playerid.Remove(id);
+		GD.Print(playerid);
+		
 		Node planetplayerin = _scene.GetNodeOrNull("Planet");
 		if(planetplayerin == null){
 			return;
