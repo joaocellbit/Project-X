@@ -2,9 +2,6 @@ using Godot;
 
 public partial class menu : Node2D
 {
-	private readonly PackedScene _planeta = ResourceLoader.Load<PackedScene>("res://Cenas/planet.tscn");
-	private readonly PackedScene _jogador = ResourceLoader.Load<PackedScene>("res://Cenas/Saiyajin.tscn");
-
 	public override void _Ready()
 	{
 	}
@@ -22,22 +19,13 @@ public partial class menu : Node2D
 		}
 
 		_fechar_menu();
-		GetParent().AddChild(_planeta.Instantiate());
-		Node personagem = _jogador.Instantiate();
-		personagem.Name = Multiplayer.GetUniqueId().ToString();
-		GetParent().GetNode("Planet").AddChild(personagem);
 	}
 
 	public void _on_join_pressed()
 	{
 		Server server = GetNode<Server>("/root/Server");
-		server.criar_cliente("127.0.0.1", 30000);
 		server.Conectado += _fechar_menu;
-		GetParent().AddChild(_planeta.Instantiate());
-		Node personagem = _jogador.Instantiate();
-		personagem.Name = Multiplayer.GetUniqueId().ToString();
-		personagem.SetMultiplayerAuthority(Multiplayer.GetUniqueId());
-		GetParent().GetNode("Planet").AddChild(personagem);
+		server.criar_cliente("127.0.0.1", 30000);
 	}
 
 	public void _fechar_menu()

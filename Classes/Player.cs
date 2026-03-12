@@ -4,6 +4,9 @@ using Godot.Collections;
 [GlobalClass]
 public partial class Player : CharacterBody2D
 {
+	private const float MoveSpeed = 100.0f;
+	private const string PunchStateName = "Punch";
+
 	[Export]
 	public int id { get; set; }
 
@@ -88,7 +91,7 @@ public partial class Player : CharacterBody2D
 		float diry = Input.GetAxis("ui_up", "ui_down");
 		float dirx = Input.GetAxis("ui_left", "ui_right");
 		Vector2 dir = new Vector2(dirx, diry);
-		Velocity = dir.Normalized() * 100.0f;
+		Velocity = dir.Normalized() * MoveSpeed;
 		MoveAndSlide();
 
 		AnimationNodeStateMachinePlayback playback = GetPlayback();
@@ -98,11 +101,21 @@ public partial class Player : CharacterBody2D
 		}
 
 		update_animation(CoordAnima, Velocity);
-		Rpc(nameof(atualizar_posicao), Velocity, Position, CoordAnima);
+		if (IsMultiplayerConnected())
+		{
+			Rpc(nameof(atualizar_posicao), Velocity, Position, CoordAnima);
+		}
 
 		if (Input.IsActionJustPressed("Punch") && playback != null)
 		{
-			playback.Travel("Punch");
+			if (IsMultiplayerConnected())
+			{
+				Rpc(nameof(sincronizar_punch), CoordAnima);
+			}
+			else
+			{
+				tocar_punch(CoordAnima);
+			}
 		}
 	}
 
@@ -113,6 +126,12 @@ public partial class Player : CharacterBody2D
 		update_animation(coordanima_server, vel);
 	}
 
+	[Rpc(MultiplayerApi.RpcMode.Authority, CallLocal = true, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+	public void sincronizar_punch(Vector2 coordanima)
+	{
+		tocar_punch(coordanima);
+	}
+
 	public void update_animation(Vector2 coordanima, Vector2 vel)
 	{
 		AnimationNodeStateMachinePlayback playback = GetPlayback();
@@ -120,6 +139,7 @@ public partial class Player : CharacterBody2D
 		{
 			return;
 		}
+
 
 		if (vel != Vector2.Zero)
 		{
@@ -141,5 +161,30 @@ public partial class Player : CharacterBody2D
 		}
 
 		return (AnimationNodeStateMachinePlayback)animationtree.Get("parameters/StateMachine/playback");
+	}
+
+	private void tocar_punch(Vector2 coordanima)
+	{
+		AnimationNodeStateMachinePlayback playback = GetPlayback();
+		if (playback == null || animationtree == null)
+		{
+			return;
+		}
+
+		animationtree.Set("parameters/StateMachine/Punch/blend_position", coordanima);
+		animationtree.Set("parameters/StateMachine/Idle/blend_position", coordanima);
+		animationtree.Set("parameters/StateMachine/Walk/blend_position", coordanima);
+		playback.Travel("Punch");
+	}
+
+	private bool IsMultiplayerConnected()
+	{
+		MultiplayerPeer peer = Multiplayer.MultiplayerPeer;
+		if (peer == null)
+		{
+			return false;
+		}
+
+		return peer.GetConnectionStatus() == MultiplayerPeer.ConnectionStatus.Connected;
 	}
 }
