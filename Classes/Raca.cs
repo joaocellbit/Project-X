@@ -31,5 +31,6 @@ public partial class Raca : Resource
 		Shadow_Dragon,
 		Android,
 		BioAnodrid,
+		Jandiriano
 	}
 }
