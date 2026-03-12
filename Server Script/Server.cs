@@ -17,7 +17,7 @@ public partial class Server : Node
 	public Dictionary<int, Array> planet_npc = new();
 	public ENetMultiplayerPeer ServerPeer = new();
 	private Node _scene;
-
+	
 	[Signal]
 	public delegate void ConectadoEventHandler();
 

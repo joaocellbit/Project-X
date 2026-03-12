@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://dw4bkcch4ufcc"]
 
-[ext_resource type="Script" path="res://namek.cs" id="1_p6xhq"]
+[ext_resource type="Script" uid="uid://birdh0pnrxukn" path="res://namek.cs" id="1_p6xhq"]
+[ext_resource type="Resource" uid="uid://dl8dme2q7504o" path="res://Racas/Namek/Namekian.tres" id="2_8liir"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8liir"]
 size = Vector2(16, 26)
@@ -9,6 +10,7 @@ size = Vector2(16, 26)
 
 [node name="Player" type="CharacterBody2D" unique_id=1932059797]
 script = ExtResource("1_p6xhq")
+race = ExtResource("2_8liir")
 
 [node name="Area2D" type="Area2D" parent="." unique_id=148862108]
 
