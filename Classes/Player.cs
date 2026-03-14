@@ -1,11 +1,9 @@
 using Godot;
-using Godot.Collections;
 
 [GlobalClass]
 public partial class Player : CharacterBody2D
 {
 	private const float MoveSpeed = 100.0f;
-	private const string PunchStateName = "Punch";
 
 	[Export]
 	public int id { get; set; }
@@ -53,6 +51,9 @@ public partial class Player : CharacterBody2D
 	public Vector2 CoordAnima;
 	public bool is_flying;
 
+	private Server _server;
+	private bool _isLocalPlayer;
+
 	public enum sexo
 	{
 		M,
@@ -61,75 +62,62 @@ public partial class Player : CharacterBody2D
 
 	public override void _Ready()
 	{
+		_server = GetNodeOrNull<Server>("/root/Server");
 		Set_animation();
+		ApplyLocalControlState();
+	}
+
+	public void ConfigureNetworkIdentity(int playerId, bool isLocalPlayer)
+	{
+		id = playerId;
+		_isLocalPlayer = isLocalPlayer;
+		ApplyLocalControlState();
 	}
 
 	public void Set_animation()
 	{
-		foreach (Node child in GetChildren())
-		{
-			if (child is AnimationTree)
-			{
-				animationtree = (AnimationTree)child;
-				break;
-			}
-		}
-	}
-
-	public void Set_id()
-	{
-		id = Multiplayer.GetUniqueId();
+		animationtree = GetNodeOrNull<AnimationTree>("AnimationTree");
 	}
 
 	public override void _PhysicsProcess(double delta)
 	{
-		if (!IsMultiplayerAuthority())
+		if (!_isLocalPlayer)
 		{
 			return;
 		}
 
 		float diry = Input.GetAxis("ui_up", "ui_down");
 		float dirx = Input.GetAxis("ui_left", "ui_right");
-		Vector2 dir = new Vector2(dirx, diry);
+		Vector2 dir = new(dirx, diry);
 		Velocity = dir.Normalized() * MoveSpeed;
 		MoveAndSlide();
 
-		AnimationNodeStateMachinePlayback playback = GetPlayback();
 		if (dir != Vector2.Zero)
 		{
 			CoordAnima = new Vector2(Mathf.Round(dir.X), Mathf.Round(dir.Y));
 		}
 
 		update_animation(CoordAnima, Velocity);
-		if (IsMultiplayerConnected())
+		_server?.PublishLocalTransform(id, Velocity, Position, CoordAnima);
+
+		if (!Input.IsActionJustPressed("Punch"))
 		{
-			Rpc(nameof(atualizar_posicao), Velocity, Position, CoordAnima);
+			return;
 		}
 
-		if (Input.IsActionJustPressed("Punch") && playback != null)
-		{
-			if (IsMultiplayerConnected())
-			{
-				Rpc(nameof(sincronizar_punch), CoordAnima);
-			}
-			else
-			{
-				tocar_punch(CoordAnima);
-			}
-		}
+		tocar_punch(CoordAnima);
+		_server?.PublishLocalPunch(id, CoordAnima);
 	}
 
-	[Rpc(MultiplayerApi.RpcMode.Authority, CallLocal = false, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
-	public void atualizar_posicao(Vector2 vel, Vector2 posicao, Vector2 coordanima_server)
+	public void ApplyNetworkTransform(Vector2 velocity, Vector2 position, Vector2 animationDirection)
 	{
-		Position = posicao;
-		update_animation(coordanima_server, vel);
+		Position = position;
+		update_animation(animationDirection, velocity);
 	}
 
-	[Rpc(MultiplayerApi.RpcMode.Authority, CallLocal = true, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
-	public void sincronizar_punch(Vector2 coordanima)
+	public void PlayNetworkPunch(Vector2 animationDirection)
 	{
-		tocar_punch(coordanima);
+		tocar_punch(animationDirection);
 	}
 
 	public void update_animation(Vector2 coordanima, Vector2 vel)
@@ -140,7 +128,6 @@ public partial class Player : CharacterBody2D
 			return;
 		}
 
-
 		if (vel != Vector2.Zero)
 		{
 			playback.Travel("Walk");
@@ -149,6 +136,7 @@ public partial class Player : CharacterBody2D
 			animationtree.Set("parameters/StateMachine/Walk/blend_position", coordanima);
 			return;
 		}
+
 		animationtree.Set("parameters/StateMachine/Idle/blend_position", coordanima);
 		playback.Travel("Idle");
 	}
@@ -177,14 +165,18 @@ public partial class Player : CharacterBody2D
 		playback.Travel("Punch");
 	}
 
-	private bool IsMultiplayerConnected()
+	private void ApplyLocalControlState()
 	{
-		MultiplayerPeer peer = Multiplayer.MultiplayerPeer;
-		if (peer == null)
+		Camera2D camera = GetNodeOrNull<Camera2D>("Camera2D");
+		if (camera == null)
 		{
-			return false;
+			return;
 		}
 
-		return peer.GetConnectionStatus() == MultiplayerPeer.ConnectionStatus.Connected;
+		camera.Enabled = _isLocalPlayer;
+		if (_isLocalPlayer)
+		{
+			camera.MakeCurrent();
+		}
 	}
 }
