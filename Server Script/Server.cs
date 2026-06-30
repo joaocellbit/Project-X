@@ -170,11 +170,9 @@ public partial class Server : Node
 			return;
 		}
 
-		NetDataWriter writer = new();
-		writer.Put((byte)MessageType.PlayerPunch);
-		writer.Put(playerId);
-		WriteVector2(writer, animationDirection);
-		_serverPeer.Send(writer, DeliveryMethod.ReliableOrdered);
+		PacketProcessor processor = PacketProcessor.ForWrite(MessageType.PlayerPunch);
+		ProcessPunch(processor, ref playerId, ref animationDirection);
+		processor.SendTo(_serverPeer, DeliveryMethod.ReliableOrdered);
 	}
 
 	public void End_connection()
@@ -211,13 +209,11 @@ public partial class Server : Node
 		_serverPeer = peer;
 		GD.Print($"Conectado ao servidor. Peer local: {peer.Id}.");
 
-		NetDataWriter writer = new();
-		writer.Put((byte)MessageType.ClientHello);
-		writer.Put(DefaultPlayerName);
-		writer.Put(DefaultPlayerRace);
-		writer.Put(DefaultPlanetId);
-		writer.Put(DefaultPlanetName);
-		peer.Send(writer, DeliveryMethod.ReliableOrdered);
+		string playerName = DefaultPlayerName, playerRace = DefaultPlayerRace, planetName = DefaultPlanetName;
+		int planetId = DefaultPlanetId;
+		PacketProcessor processor = PacketProcessor.ForWrite(MessageType.ClientHello);
+		ProcessHello(processor, ref playerName, ref playerRace, ref planetId, ref planetName);
+		processor.SendTo(peer, DeliveryMethod.ReliableOrdered);
 	}
 
 	private void OnClientDisconnected(NetPeer peer, DisconnectInfo disconnectInfo)
@@ -239,18 +235,18 @@ public partial class Server : Node
 
 	private void OnServerNetworkReceive(NetPeer peer, NetPacketReader reader, byte channelNumber, DeliveryMethod deliveryMethod)
 	{
-		MessageType messageType = (MessageType)reader.GetByte();
+		PacketProcessor processor = PacketProcessor.ForRead(reader);
 
-		switch (messageType)
+		switch (processor.ReadMessageType())
 		{
 			case MessageType.ClientHello:
-				HandleClientHello(peer, reader);
+				HandleClientHello(peer, processor);
 				break;
 			case MessageType.PlayerTransform:
-				HandleClientTransform(peer, reader);
+				HandleClientTransform(peer, processor);
 				break;
 			case MessageType.PlayerPunch:
-				HandleClientPunch(peer, reader);
+				HandleClientPunch(peer, processor);
 				break;
 		}
 
@@ -259,24 +255,24 @@ public partial class Server : Node
 
 	private void OnClientNetworkReceive(NetPeer peer, NetPacketReader reader, byte channelNumber, DeliveryMethod deliveryMethod)
 	{
-		MessageType messageType = (MessageType)reader.GetByte();
+		PacketProcessor processor = PacketProcessor.ForRead(reader);
 
-		switch (messageType)
+		switch (processor.ReadMessageType())
 		{
 			case MessageType.Welcome:
-				HandleWelcome(reader);
+				HandleWelcome(processor);
 				break;
 			case MessageType.PlayerJoined:
-				HandlePlayerJoined(reader);
+				HandlePlayerJoined(processor);
 				break;
 			case MessageType.PlayerLeft:
-				HandlePlayerLeft(reader);
+				HandlePlayerLeft(processor);
 				break;
 			case MessageType.PlayerTransform:
-				HandlePlayerTransform(reader);
+				HandlePlayerTransform(processor);
 				break;
 			case MessageType.PlayerPunch:
-				HandlePlayerPunch(reader);
+				HandlePlayerPunch(processor);
 				break;
 		}
 
@@ -288,17 +284,16 @@ public partial class Server : Node
 		GD.PrintErr($"Erro de rede em {endPoint}: {socketError}");
 	}
 
-	private void HandleClientHello(NetPeer peer, NetPacketReader reader)
+	private void HandleClientHello(NetPeer peer, PacketProcessor processor)
 	{
 		if (_playerIdByPeerId.ContainsKey(peer.Id))
 		{
 			return;
 		}
 
-		string playerName = reader.GetString();
-		string playerRace = reader.GetString();
-		int planetId = reader.GetInt();
-		string planetName = reader.GetString();
+		string playerName = null, playerRace = null, planetName = null;
+		int planetId = 0;
+		ProcessHello(processor, ref playerName, ref playerRace, ref planetId, ref planetName);
 		int playerId = _nextPlayerId++;
 
 		PlayerRecord record = CreatePlayerRecord(
@@ -318,46 +313,45 @@ public partial class Server : Node
 		BroadcastPlayerJoined(record, playerId);
 	}
 
-	private void HandleClientTransform(NetPeer peer, NetPacketReader reader)
+	private void HandleClientTransform(NetPeer peer, PacketProcessor processor)
 	{
-		reader.GetInt();
+		int incomingPlayerId = 0;
+		Vector2 position = Vector2.Zero, velocity = Vector2.Zero, animationDirection = Vector2.Zero;
+		ProcessTransform(processor, ref incomingPlayerId, ref position, ref velocity, ref animationDirection);
 
-		if (!_playerIdByPeerId.TryGetValue(peer.Id, out int playerId))
+		if (!_playerIdByPeerId.TryGetValue(peer.Id, out int playerId) || !_players.TryGetValue(playerId, out PlayerRecord record))
 		{
 			return;
 		}
 
-		if (!_players.TryGetValue(playerId, out PlayerRecord record))
-		{
-			return;
-		}
-
-		record.Position = ReadVector2(reader);
-		record.Velocity = ReadVector2(reader);
-		record.AnimationDirection = ReadVector2(reader);
-
+		record.Position = position;
+		record.Velocity = velocity;
+		record.AnimationDirection = animationDirection;
 		ApplyPlayerTransform(record);
 		BroadcastPlayerTransform(record, playerId);
 	}
 
-	private void HandleClientPunch(NetPeer peer, NetPacketReader reader)
+	private void HandleClientPunch(NetPeer peer, PacketProcessor processor)
 	{
-		reader.GetInt();
+		int incomingPlayerId = 0;
+		Vector2 animationDirection = Vector2.Zero;
+		ProcessPunch(processor, ref incomingPlayerId, ref animationDirection);
 
 		if (!_playerIdByPeerId.TryGetValue(peer.Id, out int playerId))
 		{
 			return;
 		}
 
-		Vector2 animationDirection = ReadVector2(reader);
 		PlayPlayerPunch(playerId, animationDirection);
 		BroadcastPunch(playerId, animationDirection, playerId);
 	}
 
-	private void HandleWelcome(NetPacketReader reader)
+	private void HandleWelcome(PacketProcessor processor)
 	{
-		LocalPlayerId = reader.GetInt();
-		int playerCount = reader.GetInt();
+		int localPlayerId = 0, playerCount = 0;
+		processor.Process(ref localPlayerId);
+		processor.Process(ref playerCount);
+		LocalPlayerId = localPlayerId;
 
 		_players.Clear();
 		player_state.Clear();
@@ -368,7 +362,8 @@ public partial class Server : Node
 
 		for (int i = 0; i < playerCount; i++)
 		{
-			PlayerRecord record = ReadPlayerRecord(reader);
+			PlayerRecord record = null;
+			ProcessPlayerRecord(processor, ref record);
 			TrackPlayerRecord(record);
 			SpawnOrUpdatePlayer(record);
 		}
@@ -382,54 +377,61 @@ public partial class Server : Node
 		}
 	}
 
-	private void HandlePlayerJoined(NetPacketReader reader)
+	private void HandlePlayerJoined(PacketProcessor processor)
 	{
-		PlayerRecord record = ReadPlayerRecord(reader);
+		PlayerRecord record = null;
+		ProcessPlayerRecord(processor, ref record);
 		TrackPlayerRecord(record);
 		SpawnOrUpdatePlayer(record);
 	}
 
-	private void HandlePlayerLeft(NetPacketReader reader)
+	private void HandlePlayerLeft(PacketProcessor processor)
 	{
-		int playerId = reader.GetInt();
+		int playerId = 0;
+		processor.Process(ref playerId);
 		RemovePlayerNode(playerId);
 		UntrackPlayerRecord(playerId);
 	}
 
-	private void HandlePlayerTransform(NetPacketReader reader)
+	private void HandlePlayerTransform(PacketProcessor processor)
 	{
-		int playerId = reader.GetInt();
+		int playerId = 0;
+		Vector2 position = Vector2.Zero, velocity = Vector2.Zero, animationDirection = Vector2.Zero;
+		ProcessTransform(processor, ref playerId, ref position, ref velocity, ref animationDirection);
+
 		if (!_players.TryGetValue(playerId, out PlayerRecord record))
 		{
 			return;
 		}
 
-		record.Position = ReadVector2(reader);
-		record.Velocity = ReadVector2(reader);
-		record.AnimationDirection = ReadVector2(reader);
+		record.Position = position;
+		record.Velocity = velocity;
+		record.AnimationDirection = animationDirection;
 		ApplyPlayerTransform(record);
 	}
 
-	private void HandlePlayerPunch(NetPacketReader reader)
+	private void HandlePlayerPunch(PacketProcessor processor)
 	{
-		int playerId = reader.GetInt();
-		Vector2 animationDirection = ReadVector2(reader);
+		int playerId = 0;
+		Vector2 animationDirection = Vector2.Zero;
+		ProcessPunch(processor, ref playerId, ref animationDirection);
 		PlayPlayerPunch(playerId, animationDirection);
 	}
 
 	private void SendWelcome(NetPeer peer, int localPlayerId)
 	{
-		NetDataWriter writer = new();
-		writer.Put((byte)MessageType.Welcome);
-		writer.Put(localPlayerId);
-		writer.Put(_players.Count);
+		PacketProcessor processor = PacketProcessor.ForWrite(MessageType.Welcome);
+		int playerCount = _players.Count;
+		processor.Process(ref localPlayerId);
+		processor.Process(ref playerCount);
 
 		foreach (PlayerRecord player in _players.Values)
 		{
-			WritePlayerRecord(writer, player);
+			PlayerRecord record = player;
+			ProcessPlayerRecord(processor, ref record);
 		}
 
-		peer.Send(writer, DeliveryMethod.ReliableOrdered);
+		processor.SendTo(peer, DeliveryMethod.ReliableOrdered);
 	}
 
 	private void BroadcastPlayerJoined(PlayerRecord record, int? excludedPlayerId)
@@ -441,10 +443,9 @@ public partial class Server : Node
 				continue;
 			}
 
-			NetDataWriter writer = new();
-			writer.Put((byte)MessageType.PlayerJoined);
-			WritePlayerRecord(writer, record);
-			entry.Value.Send(writer, DeliveryMethod.ReliableOrdered);
+			PacketProcessor processor = PacketProcessor.ForWrite(MessageType.PlayerJoined);
+			ProcessPlayerRecord(processor, ref record);
+			processor.SendTo(entry.Value, DeliveryMethod.ReliableOrdered);
 		}
 	}
 
@@ -470,23 +471,19 @@ public partial class Server : Node
 				continue;
 			}
 
-			NetDataWriter writer = new();
-			writer.Put((byte)MessageType.PlayerPunch);
-			writer.Put(playerId);
-			WriteVector2(writer, animationDirection);
-			entry.Value.Send(writer, DeliveryMethod.ReliableOrdered);
+			PacketProcessor processor = PacketProcessor.ForWrite(MessageType.PlayerPunch);
+			ProcessPunch(processor, ref playerId, ref animationDirection);
+			processor.SendTo(entry.Value, DeliveryMethod.ReliableOrdered);
 		}
 	}
 
 	private void SendPlayerTransform(NetPeer peer, PlayerRecord record, DeliveryMethod deliveryMethod)
 	{
-		NetDataWriter writer = new();
-		writer.Put((byte)MessageType.PlayerTransform);
-		writer.Put(record.PlayerId);
-		WriteVector2(writer, record.Position);
-		WriteVector2(writer, record.Velocity);
-		WriteVector2(writer, record.AnimationDirection);
-		peer.Send(writer, deliveryMethod);
+		PacketProcessor processor = PacketProcessor.ForWrite(MessageType.PlayerTransform);
+		int playerId = record.PlayerId;
+		Vector2 position = record.Position, velocity = record.Velocity, animationDirection = record.AnimationDirection;
+		ProcessTransform(processor, ref playerId, ref position, ref velocity, ref animationDirection);
+		processor.SendTo(peer, deliveryMethod);
 	}
 
 	private void ApplyPlayerTransform(PlayerRecord record)
@@ -548,10 +545,9 @@ public partial class Server : Node
 
 		foreach (KeyValuePair<int, NetPeer> entry in _peersByPlayerId)
 		{
-			NetDataWriter writer = new();
-			writer.Put((byte)MessageType.PlayerLeft);
-			writer.Put(playerId);
-			entry.Value.Send(writer, DeliveryMethod.ReliableOrdered);
+			PacketProcessor processor = PacketProcessor.ForWrite(MessageType.PlayerLeft);
+			processor.Process(ref playerId);
+			processor.SendTo(entry.Value, DeliveryMethod.ReliableOrdered);
 		}
 	}
 
@@ -821,56 +817,103 @@ public partial class Server : Node
 
 	private static PlayerRecord CreatePlayerRecord(int playerId, string playerName, string playerRace, int planetIdValue, string planetName)
 	{
-		return new PlayerRecord(
-			playerId,
-			new PlayerStateData(playerName, playerRace),
-			planetIdValue,
-			planetName
-		);
+		return new PlayerRecord(playerId, new PlayerStateData(playerName, playerRace), planetIdValue, planetName);
 	}
 
-	private static void WritePlayerRecord(NetDataWriter writer, PlayerRecord record)
+	// --- Serializacao: cada layout de mensagem descrito uma unica vez via Process(ref) ---
+
+	private static void ProcessHello(PacketProcessor processor, ref string playerName, ref string playerRace, ref int planetId, ref string planetName)
 	{
-		writer.Put(record.PlayerId);
-		writer.Put(record.State.Name);
-		writer.Put(record.State.Race);
-		writer.Put(record.PlanetId);
-		writer.Put(record.PlanetName);
-		WriteVector2(writer, record.Position);
-		WriteVector2(writer, record.Velocity);
-		WriteVector2(writer, record.AnimationDirection);
+		processor.Process(ref playerName);
+		processor.Process(ref playerRace);
+		processor.Process(ref planetId);
+		processor.Process(ref planetName);
 	}
 
-	private static PlayerRecord ReadPlayerRecord(NetPacketReader reader)
+	private static void ProcessTransform(PacketProcessor processor, ref int playerId, ref Vector2 position, ref Vector2 velocity, ref Vector2 animationDirection)
 	{
-		PlayerRecord record = CreatePlayerRecord(
-			reader.GetInt(),
-			reader.GetString(),
-			reader.GetString(),
-			reader.GetInt(),
-			reader.GetString()
-		);
-
-		record.Position = ReadVector2(reader);
-		record.Velocity = ReadVector2(reader);
-		record.AnimationDirection = ReadVector2(reader);
-		return record;
+		processor.Process(ref playerId);
+		processor.Process(ref position);
+		processor.Process(ref velocity);
+		processor.Process(ref animationDirection);
 	}
 
-	private static void WriteVector2(NetDataWriter writer, Vector2 vector)
+	private static void ProcessPunch(PacketProcessor processor, ref int playerId, ref Vector2 animationDirection)
 	{
-		writer.Put(vector.X);
-		writer.Put(vector.Y);
+		processor.Process(ref playerId);
+		processor.Process(ref animationDirection);
 	}
 
-	private static Vector2 ReadVector2(NetPacketReader reader)
+	private static void ProcessPlayerRecord(PacketProcessor processor, ref PlayerRecord record)
 	{
-		return new Vector2(reader.GetFloat(), reader.GetFloat());
+		int playerId = record?.PlayerId ?? 0, planetId = record?.PlanetId ?? 0;
+		string playerName = record?.State.Name, playerRace = record?.State.Race, planetName = record?.PlanetName;
+		Vector2 position = record?.Position ?? Vector2.Zero, velocity = record?.Velocity ?? Vector2.Zero, animationDirection = record?.AnimationDirection ?? Vector2.Zero;
+
+		processor.Process(ref playerId);
+		processor.Process(ref playerName);
+		processor.Process(ref playerRace);
+		processor.Process(ref planetId);
+		processor.Process(ref planetName);
+		processor.Process(ref position);
+		processor.Process(ref velocity);
+		processor.Process(ref animationDirection);
+
+		if (processor.IsWriting)
+		{
+			return;
+		}
+
+		record = CreatePlayerRecord(playerId, playerName, playerRace, planetId, planetName);
+		record.Position = position;
+		record.Velocity = velocity;
+		record.AnimationDirection = animationDirection;
 	}
 
 	private static string GetPlanetNodeName(int planetIdValue)
 	{
 		return planetIdValue == DefaultPlanetId ? "Planet" : $"Planet_{planetIdValue}";
+	}
+
+	// Serializador bidirecional: o mesmo Process() escreve ou le um campo conforme
+	// o processor foi criado (ForWrite x ForRead), garantindo que leitura e escrita
+	// nunca saiam de sincronia.
+	private sealed class PacketProcessor
+	{
+		private readonly NetDataWriter _writer;
+		private readonly NetPacketReader _reader;
+
+		private PacketProcessor(NetDataWriter writer) => _writer = writer;
+		private PacketProcessor(NetPacketReader reader) => _reader = reader;
+
+		public bool IsWriting => _writer != null;
+
+		public static PacketProcessor ForWrite(MessageType messageType)
+		{
+			NetDataWriter writer = new();
+			writer.Put((byte)messageType);
+			return new PacketProcessor(writer);
+		}
+
+		public static PacketProcessor ForRead(NetPacketReader reader) => new(reader);
+
+		public MessageType ReadMessageType() => (MessageType)_reader.GetByte();
+
+		public void SendTo(NetPeer peer, DeliveryMethod deliveryMethod) => peer.Send(_writer, deliveryMethod);
+
+		public void Process(ref int value) { if (IsWriting) _writer.Put(value); else value = _reader.GetInt(); }
+
+		public void Process(ref float value) { if (IsWriting) _writer.Put(value); else value = _reader.GetFloat(); }
+
+		public void Process(ref string value) { if (IsWriting) _writer.Put(value ?? string.Empty); else value = _reader.GetString(); }
+
+		public void Process(ref Vector2 value)
+		{
+			float x = value.X, y = value.Y;
+			Process(ref x);
+			Process(ref y);
+			value = new Vector2(x, y);
+		}
 	}
 
 	private enum MessageType : byte
